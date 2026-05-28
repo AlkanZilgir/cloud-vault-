@@ -1,83 +1,87 @@
-# ☁️ Cloud Vault — Personal Cloud Storage App
+# Cloud Vault — Private photo & file vault
 
-Store photos, videos, and files in the cloud without using any phone storage.
+A no-signup, no-cloud Progressive Web App for storing photos, videos and files privately on your own device.
 
 ## How it works
-Your files are uploaded to **Cloudinary** (free cloud storage service). The app is a **PWA** (Progressive Web App) — meaning you install it on your phone like a real app, but it lives on the web.
 
----
+Cloud Vault has two storage modes. No server, no account, no upload — files never leave your machine.
 
-## 🚀 Step-by-step: Deploy to GitHub Pages
+### 1. Browser storage (default, works everywhere)
+Files live in your browser's IndexedDB. Limited by the browser's per-site quota — usually a few GB up to ~10 GB depending on free disk and the browser.
 
-### Step 1 — Create a GitHub account
-Go to [github.com](https://github.com) and sign up (free).
+### 2. Disk folder (unlimited)
+Click **Connect a folder for unlimited storage** in Settings. The app saves every upload directly to a real folder on your hard drive using the File System Access API. Capacity = your free disk space. Existing browser files are migrated automatically.
 
-### Step 2 — Create a new repository
-1. Click the **+** button → "New repository"
-2. Name it: `cloud-vault`
-3. Set it to **Public**
-4. Click **Create repository**
+> Disk folder mode works in Chrome, Edge and Opera on desktop. On Safari, Firefox and mobile the app falls back to browser storage — install it as a PWA there to get a larger quota.
 
-### Step 3 — Upload the files
-1. Click **"uploading an existing file"** on the repository page
-2. Drag and drop ALL these files into the box:
-   - `index.html`
-   - `manifest.json`
-   - `sw.js`
-   - `icon-192.png`
-   - `icon-512.png`
-3. Click **"Commit changes"**
-
-### Step 4 — Enable GitHub Pages
-1. Go to **Settings** (in your repository)
-2. Click **Pages** in the left sidebar
-3. Under "Source", select **main** branch → **/ (root)**
-4. Click **Save**
-5. Wait ~1 minute, then your app URL will appear:  
-   `https://YOUR-USERNAME.github.io/cloud-vault`
-
----
-
-## 📱 Install on your phone
-
-### iPhone (Safari):
-1. Open your GitHub Pages URL in Safari
-2. Tap the **Share** button (box with arrow)
-3. Scroll down → tap **"Add to Home Screen"**
-4. Tap **Add** — the app appears on your home screen!
-
-### Android (Chrome):
-1. Open your GitHub Pages URL in Chrome
-2. Tap the **three dots** menu
-3. Tap **"Add to Home Screen"** or **"Install app"**
-4. Tap **Add** — done!
-
----
-
-## ☁️ Connect Cloudinary (free storage)
-
-1. Sign up free at [cloudinary.com](https://cloudinary.com/users/register_free)
-2. Copy your **Cloud name** from the dashboard
-3. Go to **Settings → Upload → Upload presets**
-4. Click **Add upload preset** → set Signing mode to **Unsigned** → Save
-5. Copy the preset name
-6. Open your Cloud Vault app → enter both values → tap Connect
-
-**Free plan includes:** 25 GB storage + 25 GB bandwidth/month
-
----
-
-## ⚠️ About deleting files
-
-Removing a file from your vault **removes it from the app's gallery** but the file **stays on Cloudinary's servers**. To fully delete a file from the cloud, go to your [Cloudinary Media Library](https://cloudinary.com/console/media_library).
+Install Cloud Vault once and use it like a native gallery app.
 
 ---
 
 ## Features
-- 📸 Upload photos directly from camera
-- 🎥 Upload videos and documents
-- 🖼️ Beautiful photo gallery with filters
-- 🔗 Share file links with anyone
-- 📲 Works offline (PWA)
-- 🌙 Dark/light mode automatic
-- 💾 Zero phone storage used
+
+- No signup, no sign-in — just open and use
+- Connect a real disk folder for unlimited capacity (Chrome / Edge desktop)
+- Photos, videos, documents — anything
+- Auto-generated thumbnails for fast gallery scrolling
+- Built-in storage usage meter
+- Drag & drop or tap to upload
+- Multi-select for batch delete or export
+- Full-screen image & video lightbox
+- Persistent storage request (browser mode)
+- Works offline as a PWA
+- Dark / light mode follows your system
+- Export everything back to your device anytime
+
+---
+
+## Run it
+
+It's a single static page. Two ways to use it:
+
+### A) Open locally
+Just double-click `index.html` — most features work, but service workers and `navigator.storage.persist()` need a real origin.
+
+### B) Serve over HTTP (recommended)
+From the project folder:
+
+```bash
+# Python 3
+python -m http.server 8080
+```
+
+Then visit `http://localhost:8080`.
+
+### C) Deploy to GitHub Pages
+Push the folder to a GitHub repo, then in **Settings → Pages** pick the `main` branch and `/ (root)`. Your app will be live at `https://<you>.github.io/<repo>`.
+
+---
+
+## Install on your phone
+
+### iPhone (Safari)
+1. Open the URL in Safari
+2. Tap **Share** → **Add to Home Screen**
+
+### Android (Chrome / Edge)
+1. Open the URL
+2. Tap the menu → **Install app** or **Add to Home Screen**
+
+Installed apps get a much larger storage quota and the OS won't evict the data.
+
+---
+
+## Storage notes
+
+- Modern browsers give a single site somewhere between a few hundred MB and several GB by default. Cloud Vault shows the actual estimate in **Settings**.
+- Click **Request persistent storage** in Settings so the browser won't auto-clear your vault if disk is low.
+- Files are not encrypted at rest — they sit in your normal browser profile. Treat this app like a local folder.
+
+---
+
+## Tech
+
+- Pure HTML, CSS, vanilla JS — no build step, no dependencies (Tabler Icons via CDN)
+- IndexedDB for blob storage (images, videos, files all stored directly)
+- Service worker for offline support
+- Web Share API for sharing files where supported
